@@ -1,5 +1,6 @@
+from turtle import forward
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 
 
 monthly_challenges = {
@@ -17,8 +18,12 @@ monthly_challenges = {
     "december" : "Listen to music!"
 }
 
-def monthly_challenge_by_number(request, month):
-    return HttpResponse(month)
+def monthly_challenge_by_number(request, month_index):
+    months = list(monthly_challenges.keys())
+    if month_index > len(monthly_challenges):
+        return HttpResponseNotFound("Invalid month!")
+    forward_month = months[month_index-1]
+    return HttpResponseRedirect(f"/challenges/{forward_month}")
 
 def monthly_challenge(request, month):
     try:
