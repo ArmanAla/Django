@@ -1,8 +1,8 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseNotFound
 
 
-monthly_challenges={
+monthly_challenges = {
     "january" : "Eat no meat!",
     "february" : "Walk for 20 mins every day!",
     "march" : "Learn English!",
@@ -18,7 +18,11 @@ monthly_challenges={
 }
 
 def monthly_challenge_by_number(request, month):
-    return HttpResponse()
+    return HttpResponse(month)
 
 def monthly_challenge(request, month):
-    return HttpResponse(f"{month}")
+    try:
+        challenge_text = monthly_challenges[month]
+        return HttpResponse(f"<h1>{month} : {challenge_text}</h1>")
+    except:
+        return HttpResponseNotFound(f"<h2>{month} is not supported!</h2>")
